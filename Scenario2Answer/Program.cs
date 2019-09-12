@@ -20,7 +20,7 @@ namespace Scenario2
          3) Make sure the resulting JSON only contains numeric values without dropping any properties. */
         private static string DoubleAllProperties(string configuration)
         {
-            var configurationObject = (JsonObject) JsonNode.Parse(configuration, new JsonDocumentOptions(), DuplicatePropertyNameHandling.Ignore);
+            var configurationObject = (JsonObject) JsonNode.Parse(configuration, new JsonNodeOptions { DuplicatePropertyNameHandling = DuplicatePropertyNameHandlingStrategy.Ignore });
             
             foreach(KeyValuePair<string, JsonNode> property in configurationObject)
             {
