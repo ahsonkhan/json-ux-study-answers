@@ -1,9 +1,8 @@
 {
-  "domain_size": 2,
   "echo_level": 0,
   "displacement_relative_tolerance": 0.0001,
+  "name": "sensor-12",
   "displacement_absolute_tolerance": 1e-9,
   "output_frequency": 4,
-  "factor": 9.8,
-  "domain_size": "two"
+  "factor": 9.8
 }
