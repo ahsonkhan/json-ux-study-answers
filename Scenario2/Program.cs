@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Linq;
 
 namespace Scenario2
 {
     class Program
     {
         /* TODO: Return a string containing properties from a given input JSON
-                 file with following modifications:
+                 file with the following modifications:
          1) Multiply all existing numbers by 2.
          2) Insert a property "input_frequency" with value 6.
 

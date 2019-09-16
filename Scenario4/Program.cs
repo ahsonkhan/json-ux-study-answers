@@ -7,7 +7,7 @@ namespace Scenario4
     class Program
     {
         // TODO: Serialize the "Song" object to a JSON representation
-        //       where instead of a number the property with the Genre
+        //       where instead of a number, the property with the Genre
         //       enum is written as a string. So instead of
         //
         //           "Genre": 3

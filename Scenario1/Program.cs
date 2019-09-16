@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Linq;
 
 namespace Scenario1
 {
     class Program
     {
         /* TODO:
-         1) Programmatically create the JSON tree structure, also known as the
-            Document Object Model (DOM), for the following JSON text. Look for
-            approaches that are similar to how you would construct XML elemens
-            in C#.
+         1) Programmatically create the JSON tree structure from scratch, also known as the
+            DOM, for the following JSON text. Look for approaches that are similar
+            to how you would construct XML elements in C#, from scratch.
 
             {
                 "name": "John Smith",
@@ -23,7 +23,7 @@ namespace Scenario1
                 }
             }
 
-         2) Convert the DOM representation to its JSON text and return that.
+         2) Transform the DOM representation as JSON text and return that.
 
         DO NOT use parsing or serialization. */
         private static string GetEmployee()
