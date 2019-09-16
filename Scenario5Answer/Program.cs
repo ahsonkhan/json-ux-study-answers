@@ -8,22 +8,11 @@ namespace Scenario5
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            Account johnAccount = GetAccount();
-            Console.WriteLine(SerializeToCustomJson(johnAccount));
-
-            string customJson = GetCustomFormattedAccountJson();
-            Account jetAccount = DeserializeFromCustomJson(customJson);
-            Console.WriteLine(jetAccount?.Email);
-            Console.WriteLine(jetAccount?.CreatedDate);
-
-            Console.WriteLine("Press any key to continue ...");
-            Console.ReadLine();
-        }
-
-        // The Example Company uses the MM/dd/yyyy format for DateTimeOffset values in their Account models.
-        // TODO: 1) Serialize the "account" object to a custom-formatted JSON string and return it.
+        // We want to serialize the DateTimeOffset using a specific format,
+        // namely as "MM/dd/yyyy".
+        //
+        // TODO: Serialize the given account to a custom-formatted JSON string
+        //       and return it.
         private static string SerializeToCustomJson(Account account)
         {
             JsonSerializerOptions options = new JsonSerializerOptions();
@@ -33,8 +22,11 @@ namespace Scenario5
             return json;
         }
 
-        // The Example Company uses the MM/dd/yyyy format for DateTimeOffset values in their Account models.
-        // TODO: 2) Deserialize the custom-formatted JSON string as an "account" object and return it.
+        // The data we're given uses the "MM/dd/yyyy" format for DateTimeOffset
+        // values.
+        //
+        // TODO: Deserialize the custom-formatted JSON string as an Account object
+        //       and return it.
         private static Account DeserializeFromCustomJson(string json)
         {
             JsonSerializerOptions options = new JsonSerializerOptions();
@@ -42,6 +34,30 @@ namespace Scenario5
 
             Account account = JsonSerializer.Deserialize<Account>(json, options);
             return account;
+        }
+
+        public class ExampleDateTimeOffsetConverter : JsonConverter<DateTimeOffset>
+        {
+            public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                Debug.Assert(typeToConvert == typeof(DateTimeOffset));
+                return DateTimeOffset.ParseExact(reader.GetString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            }
+
+            public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
+            {
+                writer.WriteStringValue(value.ToString("MM/dd/yyyy"));
+            }
+        }
+
+        // -------------------------------------
+        // The code below SHOULD NOT BE modified
+        // -------------------------------------
+
+        public class Account
+        {
+            public string Email { get; set; }
+            public DateTimeOffset CreatedDate { get; set; }
         }
 
         private static Account GetAccount()
@@ -65,25 +81,21 @@ namespace Scenario5
             }";
             return json;
         }
-    }
 
-    public class Account
-    {
-        public string Email { get; set; }
-        public DateTimeOffset CreatedDate { get; set; }
-    }
-
-    public class ExampleDateTimeOffsetConverter : JsonConverter<DateTimeOffset>
-    {
-        public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        #region Main
+        static void Main(string[] args)
         {
-            Debug.Assert(typeToConvert == typeof(DateTimeOffset));
-            return DateTimeOffset.ParseExact(reader.GetString(), "MM/dd/yyyy", CultureInfo.InvariantCulture);
-        }
+            Account johnAccount = GetAccount();
+            Console.WriteLine(SerializeToCustomJson(johnAccount));
 
-        public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString("MM/dd/yyyy"));
+            string customJson = GetCustomFormattedAccountJson();
+            Account jetAccount = DeserializeFromCustomJson(customJson);
+            Console.WriteLine(jetAccount?.Email);
+            Console.WriteLine(jetAccount?.CreatedDate);
+
+            Console.WriteLine("Press any key to continue ...");
+            Console.ReadKey();
         }
+        #endregion
     }
 }

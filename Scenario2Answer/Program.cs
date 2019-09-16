@@ -1,39 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Linq;
 
 namespace Scenario2
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            string configuration = File.ReadAllText("input.json");
-            string doubledProperties = DoubleAllProperties(configuration);
-            Console.WriteLine(doubledProperties);
-        }
-
-        /* TODO: Return a string containing properties from a given config file with following modifications:
-         1) Multiply all values by 2.
+        /* TODO: Return a string containing properties from a given input JSON
+                 file with the following modifications:
+         1) Multiply all existing numbers by 2.
          2) Insert a property "input_frequency" with value 6.
-         3) Make sure the resulting JSON only contains numeric values without dropping any properties. */
-        private static string DoubleAllProperties(string configuration)
+
+           DO NOT use a serializer, but parsing is OK. */
+        private static string ModifyJson(string configuration)
         {
-            var configurationObject = (JsonObject) JsonNode.Parse(configuration, new JsonNodeOptions { DuplicatePropertyNameHandling = DuplicatePropertyNameHandlingStrategy.Ignore });
+            JObject config = JObject.Parse(configuration);
             
-            foreach(KeyValuePair<string, JsonNode> property in configurationObject)
+            foreach(KeyValuePair<string, JNode> property in config)
             {
-                var jsonNumber = property.Value as JsonNumber;
-                if (jsonNumber != null && jsonNumber.TryGetDouble(out double doubleNumber))
+                if (property.Value is JNumber number)
                 {
-                    jsonNumber.SetDouble(doubleNumber * 2);
+                    number.SetDouble(number.GetDouble() * 2);
                 }
             }
 
-            configurationObject.Add("input_frequency", 6);
+            config.Add("input_frequency", 6);
 
-            return configurationObject.ToJsonString();
+            return config.ToString();
         }
+
+        // -------------------------------------
+        // The code below SHOULD NOT BE modified
+        // -------------------------------------
+
+        #region Main
+        static void Main(string[] args)
+        {
+            string configuration = File.ReadAllText("input.json");
+            string doubledProperties = ModifyJson(configuration);
+            Console.WriteLine(doubledProperties);
+
+            Console.WriteLine("Press any key to continue ...");
+            Console.ReadKey();
+        }
+        #endregion
     }
 }

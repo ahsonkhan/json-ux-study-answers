@@ -1,36 +1,50 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Linq;
 
 namespace Scenario1
 {
     class Program
     {
+        /* TODO:
+         1) Programmatically create the JSON tree structure from scratch, also known as the
+            DOM, for the following JSON text. Look for approaches that are similar
+            to how you would construct XML elements in C#, from scratch.
+
+            {
+                "name": "John Smith",
+                "is manager": true,
+                "employee ids": [ 1234, 54678, 90 ],
+                "direct supervisor" : null,
+                "address":
+                {
+                    "address line 1": "One Microsoft Way",
+                    "zip code": 98052
+                }
+            }
+
+         2) Transform the DOM representation as JSON text and return that.
+
+        DO NOT use parsing or serialization. */
+        private static string GetEmployee()
+        {
+            // TODO: Add/modify code here
+            throw new NotImplementedException();
+        }
+
+        // -------------------------------------
+        // The code below SHOULD NOT BE modified
+        // -------------------------------------
+
+        #region Main
         static void Main(string[] args)
         {
             string employee = GetEmployee();
             Console.WriteLine(employee);
-        }
 
-        /* TODO: 
-         1) Create an in-memory Document Object Model (DOM) that represents the following JSON:
-            {
-                "name": "John Smith",
-                "is manager": true, 
-                "reporting FTE employees ids": [ 1234, 54678, 90, 123, 56789 ],
-                "reporting intern employees ids" : [],
-                "direct supervisor" : null,
-                "address": 
-                {
-                    "address line 1": "One Microsoft Way",
-                    "city": "Redmond",
-                    "zip code": 98052,
-                    "state": "WA"  
-                }
-            }
-         2) Return it as a string. */
-        private static string GetEmployee()
-        {
-            throw new NotImplementedException();
+            Console.WriteLine("Press any key to continue ...");
+            Console.ReadKey();
         }
+        #endregion
     }
 }
